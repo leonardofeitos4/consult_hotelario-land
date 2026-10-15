@@ -84,7 +84,6 @@ const SITE = {
   ],
 
   devCredit: { name: '@lfdesenvolvimentos', url: 'https://www.instagram.com/lfdesenvolvimentos/' },
-  photoCredit: 'Fotos ilustrativas: Unsplash e Wikimedia Commons (CC BY / CC BY-SA). Substituir pelas fotos reais dos imóveis.',
 
   /* ── ASSISTENTE ── */
   bot: {
