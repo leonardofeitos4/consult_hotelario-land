@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consult Hotelaria</title>
+<meta name="description" content="Administração de flats e casas, consultoria de gestão hoteleira e treinamentos em Pipa e Porto de Galinhas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="nav"><span class="brand" id="navBrand"></span><a class="btn primary" id="navCta" target="_blank" rel="noopener">Falar com a gente</a></div>
+
+<header class="hero">
+  <div class="ph" id="heroPh"></div>
+  <canvas class="shader wash"></canvas>
+  <div class="shade"></div>
+  <div class="hero-in">
+    <span class="eyebrow glass" id="eyebrow"></span>
+    <h1 id="h1"></h1>
+    <p class="lead" id="intro"></p>
+    <div class="cta">
+      <a class="btn primary" id="cta1" target="_blank" rel="noopener">💬 Pedir orçamento</a>
+      <a class="btn glass" href="#flats">🏘️ Ver flats e casas</a>
+    </div>
+    <div class="facts">
+      <div class="fact glass"><b>🏘️</b><span>Flats e casas<small>Administração completa</small></span></div>
+      <div class="fact glass"><b>🏨</b><span>Consultoria<small>Gestão hoteleira</small></span></div>
+      <div class="fact glass"><b>🎓</b><span>Treinamentos<small>Para sua equipe</small></span></div>
+    </div>
+  </div>
+</header>
+
+<div class="marq"><div id="marq"></div></div>
+
+<div class="paper">
+  <section class="blk" id="flats">
+    <div class="head rv">
+      <div><h2>Flats e casas<br>que a gente cuida</h2><p class="sub">Alguns exemplos do tipo de unidade que administramos em Pipa e Porto de Galinhas.</p></div>
+      <div class="arrows"><button id="prev" aria-label="Anterior">←</button><button id="next" aria-label="Próximo">→</button></div>
+    </div>
+    <div class="rail" id="rail"></div>
+    <p class="note" id="note"></p>
+  </section>
+
+  <section class="blk">
+    <div class="head rv"><div><h2>O que fazemos</h2><p class="sub">Do imóvel ao hotel: operação, estratégia e equipe.</p></div></div>
+    <div class="bento" id="services"></div>
+  </section>
+
+  <section class="blk" id="onde">
+    <div class="head rv"><div><h2>Onde atuamos</h2><p class="sub">Dois dos destinos mais fortes do litoral nordestino.</p></div></div>
+    <div class="tabs" id="tabs"></div>
+    <div class="dest rv"><div class="dphoto" id="dphoto"></div><div class="dmap" id="dmap"></div></div>
+  </section>
+
+  <section class="blk">
+    <div class="head rv"><div><h2>Como funciona</h2><p class="sub">Simples, claro e sem enrolação.</p></div></div>
+    <div class="steps" id="steps"></div>
+  </section>
+
+  <div class="final rv">
+    <canvas class="shader"></canvas>
+    <h2>Vamos conversar?</h2>
+    <p>Conte sobre sua unidade ou hotel. A proposta é sem compromisso.</p>
+    <a class="btn primary" id="cta2" target="_blank" rel="noopener">💬 Chamar no WhatsApp</a>
+  </div>
+  <footer class="site" id="foot"></footer>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script src="js/shader.js"></script>
+<script src="js/bot.js"></script>
+<script>
+  document.title = SITE.brand + ' — ' + SITE.tagline;
+  navBrand.textContent = SITE.brand;
+  heroPh.style.backgroundImage = `url(${SITE.hero})`;
+  eyebrow.textContent = '📍 ' + SITE.places;
+  h1.innerHTML = SITE.heroTitle; intro.innerHTML = SITE.intro;
+  [navCta, cta1, cta2].forEach(a => a.href = waLink());
+  const m = SITE.marquee.map(t => `<span>${t}</span><i>✦</i>`).join('');
+  marq.innerHTML = m + m + m + m;
+  foot.innerHTML = `© ${new Date().getFullYear()} ${SITE.brand} · <a href="${SITE.instagram}">Instagram</a><br>${SITE.photoCredit}<br><a class="dev" href="${SITE.devCredit.url}" target="_blank" rel="noopener">Desenvolvido por ${SITE.devCredit.name}</a>`;
+  note.textContent = 'Imagens ilustrativas.';
+
+  /* galeria de flats */
+  rail.innerHTML = SITE.flats.map(f => `
+    <article class="flat">
+      <div class="im" style="background-image:url(${f.img})"></div>
+      <div class="tp"><span class="chip2">📍 ${f.place}</span></div>
+      <div class="bt"><h3>${f.name}</h3><p>${f.info}</p>
+        <a class="btn" target="_blank" rel="noopener" href="${waLink('Quero um imóvel como o ' + f.name + ' (' + f.place + ').')}">Quero algo assim →</a></div>
+    </article>`).join('');
+  const step = () => rail.querySelector('.flat').offsetWidth + 18;
+  prev.onclick = () => rail.scrollBy({ left: -step(), behavior: 'smooth' });
+  next.onclick = () => rail.scrollBy({ left: step(), behavior: 'smooth' });
+  /* arrastar com o mouse */
+  let down = false, sx = 0, sl = 0;
+  rail.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; down = true; sx = e.clientX; sl = rail.scrollLeft; rail.style.scrollSnapType = 'none'; });
+  addEventListener('pointerup', () => { if (down) { down = false; rail.style.scrollSnapType = ''; } });
+  addEventListener('pointermove', e => { if (down) rail.scrollLeft = sl - (e.clientX - sx); });
+
+  /* serviços */
+  services.innerHTML = SITE.services.map(s => `
+    <article class="svc rv ${s.size || ''}"><div class="im" style="background-image:url(${s.img})"></div>
+      <h3>${s.title}</h3><p>${s.text}</p><div class="tags">${(s.tags || []).map(t => `<span>${t}</span>`).join('')}</div></article>`).join('');
+
+  /* destinos: foto + mapa trocam juntos */
+  function showDest(i) {
+    const d = SITE.destinos[i];
+    document.querySelectorAll('.tab').forEach((t, k) => t.classList.toggle('act', k === i));
+    dphoto.innerHTML = `<div class="im swap" style="background-image:url(${d.img})"></div>
+      <div class="tx"><small>${d.state}</small><h3>${d.name}</h3><p>${d.text}</p>
+      <div class="tags">${d.spots.map(s => `<span>📌 ${s}</span>`).join('')}</div></div>`;
+    dmap.innerHTML = `<iframe class="swap" loading="lazy" title="Mapa de ${d.name}" src="${d.map}"></iframe><a href="${d.link}" target="_blank" rel="noopener">Abrir no Google Maps ↗</a>`;
+  }
+  tabs.innerHTML = SITE.destinos.map((d, i) => `<button class="tab">📍 ${d.name}</button>`).join('');
+  tabs.querySelectorAll('.tab').forEach((b, i) => b.onclick = () => showDest(i));
+  showDest(0);
+
+  steps.innerHTML = SITE.steps.map(s => `<div class="step rv"><strong>${s.t}</strong><span>${s.d}</span></div>`).join('');
+  reveal();
+</script>
+</body>
+</html>
